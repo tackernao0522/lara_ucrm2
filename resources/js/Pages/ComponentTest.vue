@@ -2,11 +2,14 @@
 import GuestLayout from '@/Layouts/GuestLayout.vue'
 import Label from '@/Components/InputLabel.vue'
 import Input from '@/Components/TextInput.vue'
+
+const emitTest = e => console.log(e)
 </script>
 
 <template>
     <GuestLayout>
         <Label value="件名">タイトル</Label>
-        <Input modelValue="初期値が入ります" /> <!--- このTextInput.vueへmodelValueを渡している -->
+        <Input modelValue="初期値が入ります" @update:modelValue="emitTest" />
+        <!--- 子のTextInput.vueへmodelValueを渡している -->
     </GuestLayout>
 </template>
