@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ItemController extends Controller
 {
@@ -13,7 +15,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        // dd(Item::select('id', 'name', 'price', 'is_selling')->get());
+        // $items = Item::select('id', 'name', 'price', 'is_selling')->get();
+        return Inertia::render('Items/Index', ['items' => Item::select('id', 'name', 'price', 'is_selling')->get()]);
     }
 
     /**
