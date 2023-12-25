@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head } from '@inertiajs/vue3';
 
 defineProps({
     items: Array
@@ -20,7 +20,7 @@ defineProps({
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <section class="text-gray-600 body-font">
-                            <div class="container px-5 py-24 mx-auto">
+                            <div class="container px-5 py-8 mx-auto">
                                 <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
                                     <button
                                         class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Button</button>
@@ -40,15 +40,17 @@ defineProps({
                                                     価格</th>
                                                 <th
                                                     class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">
-                                                    ステータス</th>
+                                                    スタータス</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="item in items" :key="item.id">
-                                                <td class="px-4 py-3">{{ item.id }}</td>
-                                                <td class="px-4 py-3">{{ item.name }}</td>
-                                                <td class="px-4 py-3">{{ item.price }}</td>
-                                                <td class="px-4 py-3 text-lg">{{ item.is_selling }}</td>
+                                                <td class="border-b-2 px-4 py-3">{{ item.id }}</td>
+                                                <td class="border-b-2 px-4 py-3">{{ item.name }}</td>
+                                                <td class="border-b-2 px-4 py-3">{{ item.price }}</td>
+                                                <td class="border-b-2 px-4 py-3">
+                                                    <span>{{ item.is_selling === 1 ? '販売中' : '停止中' }}</span>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>

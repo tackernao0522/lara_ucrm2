@@ -1,1 +1,1 @@
-README05.md  28. スロット・名前付きスロットから
+README07.md  40. Items createへのリンクから
