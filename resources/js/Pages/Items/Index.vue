@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import FlashMessage from '../../Components/FlashMessae.vue'
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
@@ -21,6 +22,7 @@ defineProps({
                     <div class="p-6 bg-white border-b border-gray-200">
                         <section class="text-gray-600 body-font">
                             <div class="container px-5 py-8 mx-auto">
+                                <FlashMessage />
                                 <div class="flex pl-4 my-4 lg:w-2/3 w-full mx-auto">
                                     <Link as="button" :href="route('items.create')"
                                         class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
