@@ -1,1 +1,1 @@
-README07.md  40. Items createへのリンクから
+README09.md  47. Item Edit 商品編集 その1から
