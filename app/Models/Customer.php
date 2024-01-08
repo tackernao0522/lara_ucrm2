@@ -10,4 +10,15 @@ class Customer extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function scopeSearchCustomers($query, $input = null)
+    {
+        if (!empty($input)) {
+            if (Customer::where('kana', 'like', $input . '%')->orWhere('tel', 'like', $input . '%')
+                ->exists()
+            ) {
+                return $query->where('kana', 'like', $input . '%')->orWhere('tel', 'like', $input . '%');
+            }
+        }
+    }
 }
