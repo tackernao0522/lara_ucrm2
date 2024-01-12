@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, router } from '@inertiajs/vue3';
 import { reactive } from 'vue';
+import { Core as YubinBangoCore } from "yubinbango-core2"
 
 defineProps({
     errors: Object,
@@ -19,6 +20,13 @@ const form = reactive({
     gender: null,
     memo: null,
 })
+
+const fetchAddress = () => {
+    new YubinBangoCore(String(form.postcode), (value) => {
+        // console.log(value)
+        form.address = value.region + value.locality + value.street
+    })
+}
 
 const storeCustomer = () => {
     router.post(route('customers.store'), form)
@@ -77,7 +85,7 @@ const storeCustomer = () => {
                                                     <label for="postcode"
                                                         class="leading-7 text-sm text-gray-600">郵便番号</label>
                                                     <input type="number" id="postcode" name="postcode"
-                                                        v-model="form.postcode"
+                                                        @change="fetchAddress" v-model="form.postcode"
                                                         class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
                                                 </div>
                                             </div>
@@ -138,6 +146,7 @@ const storeCustomer = () => {
                         </section>
                     </div>
                 </div>
+            </div>
         </div>
-    </div>
-</AuthenticatedLayout></template>
+    </AuthenticatedLayout>
+</template>
