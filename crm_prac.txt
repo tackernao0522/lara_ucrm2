@@ -1,1 +1,1 @@
-README13.md  57. Cusotmer 検索機能(Laravel側)から
+README17.md  66. 購入日の日付を取得(JS Dateオブジェクト)から
