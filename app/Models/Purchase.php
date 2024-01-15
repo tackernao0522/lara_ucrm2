@@ -14,7 +14,14 @@ class Purchase extends Model
         'status',
     ];
 
-    public function customer() {
+    public function customer()
+    {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function items()
+    {
+        return $this->belongsToMany(Item::class)
+            ->withPivot('quntity');
     }
 }
