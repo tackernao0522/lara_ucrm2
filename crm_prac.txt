@@ -1,1 +1,1 @@
-README17.md  66. 購入日の日付を取得(JS Dateオブジェクト)から
+README17.md  67. 顧客情報をv-forで表示から
