@@ -4,6 +4,7 @@ import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
 import { Head, router } from '@inertiajs/vue3';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { getToday } from '@/common';
+import MicroModal from '@/Components/MicroModal.vue'
 
 const props = defineProps({
     'errors': Object,
@@ -84,6 +85,7 @@ const storePurchase = () => {
                                             </div>
                                             <div class="p-2 w-full">
                                                 <div class="relative">
+                                                    <MicroModal />
                                                     <label for="customer"
                                                         class="leading-7 text-sm text-gray-600">会員名</label>
                                                     <select id="customer" name="customer" v-model="form.customer_id"
