@@ -15,13 +15,20 @@ const searchCustomers = async () => {
     try {
         await axios.get(`/api/searchCustomers/?search=${search.value}`)
             .then((res) => {
-                console.log(res.data)
                 customers.value = res.data
             })
         toggleStatus()
     } catch (e) {
         console.log(e)
     }
+}
+
+const emit = defineEmits(['update:customerId'])
+
+const setCustomer = (e) => {
+    search.value = e.kana
+    emit('update:customerId', e.id)
+    toggleStatus()
 }
 </script>
 
@@ -57,7 +64,12 @@ const searchCustomers = async () => {
                             </thead>
                             <tbody>
                                 <tr v-for="customer in customers.value.data" :key="customer.id">
-                                    <td class="border-b-2 px-4 py-3">{{ customer.id }}</td>
+                                    <td class="border-b-2 px-4 py-3">
+                                        <button type="button" class="text-blue-400"
+                                            @click="setCustomer({ id: customer.id, kana: customer.kana })">
+                                            {{ customer.id }}
+                                        </button>
+                                    </td>
                                     <td class="border-b-2 px-4 py-3">{{ customer.name }}</td>
                                     <td class="border-b-2 px-4 py-3">{{ customer.kana }}</td>
                                     <td class="border-b-2 px-4 py-3">{{ customer.tel }}</td>
