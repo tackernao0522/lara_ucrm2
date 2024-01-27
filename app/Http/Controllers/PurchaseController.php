@@ -161,7 +161,25 @@ class PurchaseController extends Controller
      */
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
-        dd($request, $purchase);
+        // dd($request, $purchase);
+        $purchase->status = $request->status;
+        $purchase->save();
+
+        $items = [];
+
+        foreach ($request->items as $item) {
+            $items = $items + [
+                // item_id => [中間テーブルの列名 => 値]
+                $item['id'] => [
+                    'quantity' => $item['quantity'],
+                ]
+            ];
+        }
+
+        // dd($items);
+        $purchase->items()->sync($items);
+
+        return to_route('dashboard');
     }
 
     /**
