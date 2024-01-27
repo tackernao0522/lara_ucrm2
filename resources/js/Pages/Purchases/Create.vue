@@ -8,7 +8,6 @@ import MicroModal from '@/Components/MicroModal.vue'
 
 const props = defineProps({
     'errors': Object,
-    'customers': Array,
     'items': Array,
 })
 
