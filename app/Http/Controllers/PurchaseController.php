@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\Order;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        dd(Order::paginate(50));
     }
 
     /**
