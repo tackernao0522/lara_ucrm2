@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePurchaseRequest;
+use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Customer;
 use App\Models\Item;
 use App\Models\Order;
@@ -138,7 +139,17 @@ class PurchaseController extends Controller
             ]);
         }
 
-        dd($items);
+        // dd($items);
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('id, customer_id,
+        customer_name, status, created_at')
+            ->get();
+
+        return Inertia::render('Purchases/Edit', [
+            'items' => $items,
+            'order' => $order,
+        ]);
     }
 
     /**
@@ -148,9 +159,9 @@ class PurchaseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
-        //
+        dd($request, $purchase);
     }
 
     /**

@@ -1,54 +1,95 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
+import BreezeValidationErrors from '@/Components/ValidationErrors.vue'
+import { Head, router } from '@inertiajs/vue3';
+import { computed, onMounted, reactive, ref } from 'vue';
 import dayjs from 'dayjs'
 
 const props = defineProps({
-    items: Array,
+    errors: Object,
     order: Array,
+    items: Array,
 })
 
+const itemList = ref([])
+
 onMounted(() => {
-    console.log(props.items)
-    console.log(props.order[0].customer_name)
+    props.items.forEach((item) => {
+        itemList.value.push({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+        })
+    })
 })
+
+const quantity = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9",]
+
+const form = reactive({
+    id: props.order[0].id,
+    date: dayjs(props.order[0].created_at).format("YYYY-MM-DD"),
+    customer_id: props.order[0].customer_id,
+    status: props.order[0].status,
+    items: [],
+})
+
+const totalPrice = computed(() => {
+    let total = 0
+    itemList.value.forEach((item) => {
+        total += item.price * item.quantity
+    })
+
+    return total
+})
+
+const updatePurchase = (id) => {
+    itemList.value.forEach((item) => {
+        if (item.quantity > 0) {
+            form.items.push({
+                id: item.id,
+                quantity: item.quantity,
+            })
+        }
+    })
+
+    router.put(route('purchases.update', { purchase: id }), form)
+}
 </script>
 
 <template>
-    <Head title="購買履歴 詳細画面" />
+    <Head title="購買履歴 編集画面" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">購買履歴 詳細画面</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">購買履歴 編集画面</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+                        <BreezeValidationErrors class="mb-4 text-center" :errors="errors" />
                         <section class="text-gray-600 body-font relative">
-                            <form @submit.prevent="storePurchase">
+                            <form @submit.prevent="updatePurchase(form.id)">
                                 <div class="container px-5 py-8 mx-auto">
                                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                         <div class="flex flex-wrap -m-2">
                                             <div class="p-2 w-full">
                                                 <div class="relative">
                                                     <label for="date" class="leading-7 text-sm text-gray-600">日付</label>
-                                                    <div id="date" name="date"
+                                                    <input disabled type="date" id="date" name="date" :value="form.date"
                                                         class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        {{ dayjs(props.order[0].created_at).format('YYYY/MM/DD') }}
-                                                    </div>
                                                 </div>
                                             </div>
+
                                             <div class="p-2 w-full">
                                                 <div class="relative">
-                                                    <label for="customer_name"
+                                                    <label for="customer"
                                                         class="leading-7 text-sm text-gray-600">会員名</label>
-                                                    <div id="customer_name" name="customer_name"
+                                                    <input disabled type="text" id="customer" name="customer"
+                                                        :value="props.order[0].customer_name"
                                                         class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        {{ props.order[0].customer_name }}
-                                                    </div>
                                                 </div>
                                             </div>
 
@@ -74,13 +115,18 @@ onMounted(() => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr v-for="item in props.items" :key="item.id">
-                                                            <td class="border-b-2 px-4 py-3">{{ item.item_id }}</td>
-                                                            <td class="border-b-2 px-4 py-3">{{ item.item_name }}</td>
-                                                            <td class="border-b-2 px-4 py-3">{{ item.item_price }}</td>
-                                                            <td class="border-b-2 px-4 py-3">{{ item.quantity }}</td>
+                                                        <tr v-for="item in itemList" :key="item.id">
+                                                            <td class="border-b-2 px-4 py-3">{{ item.id }}</td>
+                                                            <td class="border-b-2 px-4 py-3">{{ item.name }}</td>
+                                                            <td class="border-b-2 px-4 py-3">{{ item.price }}</td>
                                                             <td class="border-b-2 px-4 py-3">
-                                                                {{ item.subtotal }}
+                                                                <select name="quantity" v-model="item.quantity">
+                                                                    <option v-for="q in quantity" :value="q" :key="q">{{ q
+                                                                    }}</option>
+                                                                </select>
+                                                            </td>
+                                                            <td class="border-b-2 px-4 py-3">
+                                                                {{ item.price * item.quantity }}
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -92,40 +138,27 @@ onMounted(() => {
                                                     <label for="price" class="leading-7 text-sm text-gray-600">合計金額</label>
                                                     <div id="price"
                                                         class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        {{ props.order[0].total }} 円</div>
+                                                        {{ totalPrice }} 円</div>
                                                 </div>
                                             </div>
 
                                             <div class="p-2 w-full">
-                                                <div>
-                                                    <label for="stauts"
-                                                        class="leading-7 text-sm text-gray-600">ステータス</label>
-                                                    <div id="status" v-if="props.order[0].status == true"
-                                                        class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        未キャンセル
-                                                    </div>
-                                                    <div id="status" v-if="props.order[0].status == false"
-                                                        class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        キャンセル済み
-                                                    </div>
+                                                <div class="flex items-center">
+                                                    <label for="status"
+                                                        class="leading-7 text-sm text-gray-600 mr-2">ステータス</label>
+                                                    <input type="radio" id="status" name="status" v-model="form.status"
+                                                        value="1" class="mr-1">
+                                                    <label for="is_selling"
+                                                        class="text-sm text-gray-600 mr-4">未キャンセル</label>
+                                                    <input type="radio" id="status" name="status" v-model="form.status"
+                                                        value="0" class="mr-1">
+                                                    <label for="status" class="text-sm text-gray-600">キャンセルする</label>
                                                 </div>
                                             </div>
 
                                             <div class="p-2 w-full">
-                                                <div>
-                                                    <label for="cancel"
-                                                        class="leading-7 text-sm text-gray-600">キャンセル日</label>
-                                                    <div id="cancel" v-if="props.order[0].status == false"
-                                                        class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out">
-                                                        {{ dayjs(props.order[0].updated_at).format('YYYY/MM/DD') }}</div>
-                                                </div>
-                                            </div>
-
-                                            <div v-if="props.order[0].status == true" class="p-2 w-full">
-                                                <Link as="button"
-                                                    :href="route('purchases.edit', { purchase: props.order[0].id })"
-                                                    class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                                                編集する</Link>
+                                                <button
+                                                    class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新する</button>
                                             </div>
                                         </div>
                                     </div>
