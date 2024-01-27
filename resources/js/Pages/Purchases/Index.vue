@@ -4,6 +4,7 @@ import FlashMessage from '../../Components/FlashMessae.vue'
 import { Head, Link, router } from '@inertiajs/vue3';
 import Pagination from '@/Components/Pagination.vue';
 import { onMounted, ref } from "vue"
+import dayjs from 'dayjs'
 
 const props = defineProps({
     orders: Object,
@@ -35,9 +36,6 @@ onMounted(() => {
                                         <button @click="searchCustomers"
                                             class="bg-blue-300 text-white py-2 px-2">検索</button>
                                     </div>
-                                    <Link as="button" :href="route('customers.create')"
-                                        class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">
-                                    顧客登録</Link>
                                 </div>
                                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                                     <table class="table-auto w-full text-left whitespace-nowrap">
@@ -66,7 +64,8 @@ onMounted(() => {
                                                 <td class="border-b-2 px-4 py-3">{{ order.customer_name }}</td>
                                                 <td class="border-b-2 px-4 py-3">{{ order.total }}</td>
                                                 <td class="border-b-2 px-4 py-3">{{ order.status }}</td>
-                                                <td class="border-b-2 px-4 py-3">{{ order.created_at }}</td>
+                                                <td class="border-b-2 px-4 py-3">{{
+                                                    dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
