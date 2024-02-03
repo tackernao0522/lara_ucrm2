@@ -4,6 +4,7 @@ import { getToday } from '@/common';
 import { Head } from '@inertiajs/vue3';
 import { onMounted, reactive } from 'vue';
 import axios from 'axios';
+import Chart from '../Components/Chart.vue'
 
 onMounted(() => {
     form.startDate = getToday()
@@ -56,6 +57,8 @@ const getData = async () => {
                             <button
                                 class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">分析する</button>
                         </form>
+
+                        <Chart />
 
                         <div v-show="data.data" class="lg:w-2/3 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-nowrap">
