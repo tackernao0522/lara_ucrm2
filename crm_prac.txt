@@ -1,1 +1,4 @@
 README29.md  103. デシル分析2 連番を振り必要な変数を設定
+
+anacondaのパス確認コマンド conda info --base
+export PATH="/path/to/anaconda3/bin:$PATH"　(anacondaを導入した時の.zprofileのパス設定)
