@@ -63,6 +63,8 @@ const getData = async () => {
                                 class="mr-2">月別</span>
                             <input type="radio" v-model="form.type" value="perYear" class="mr-2"><span
                                 class="mr-2">年別</span>
+                            <input type="radio" v-model="form.type" value="decile" class="mr-2"><span
+                                class="mr-2">デシル分析</span>
                             <br>
                             <div class="mt-2">
                                 From: <input type="date" name="startDate" v-model="form.startDate">
@@ -81,4 +83,5 @@ const getData = async () => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout></template>
+    </AuthenticatedLayout>
+</template>
