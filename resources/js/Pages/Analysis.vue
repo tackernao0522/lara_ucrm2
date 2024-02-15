@@ -15,7 +15,10 @@ onMounted(() => {
 const form = reactive({
     startDate: null,
     endDate: null,
-    type: 'perDay' // 仮で直入力
+    type: 'perDay', // 仮で直入力
+    rfmPrms: [
+        14, 28, 60, 90, 7, 5, 3, 2, 300000, 200000, 100000,
+        30000],
 })
 
 const data = reactive({})
@@ -65,10 +68,50 @@ const getData = async () => {
                                 class="mr-2">年別</span>
                             <input type="radio" v-model="form.type" value="decile" class="mr-2"><span
                                 class="mr-2">デシル分析</span>
+                            <input type="radio" v-model="form.type" value="rfm" class="mr-2"><span class="mr-2">RFM分析</span>
                             <br>
                             <div class="mt-2">
                                 From: <input type="date" name="startDate" v-model="form.startDate">
-                                To: <input type="date" name="endDate" v-model="form.endDate">
+                                To: <input type="date" name="endDate" v-model="form.endDate"><br>
+
+                                <div v-if="form.type === 'rfm'" class="my^8">
+                                    <table class="mx-auto">
+                                        <thead>
+                                            <tr>
+                                                <th>ランク</th>
+                                                <th>R (⚪︎日以内)</th>
+                                                <th>F (⚪︎回以上)</th>
+                                                <th>M (⚪︎円以上)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>5</td>
+                                                <td><input type="number" v-model="form.rfmPrms[0]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[4]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[8]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td><input type="number" v-model="form.rfmPrms[1]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[5]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[9]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td><input type="number" v-model="form.rfmPrms[2]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[6]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[10]"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td><input type="number" v-model="form.rfmPrms[3]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[7]"></td>
+                                                <td><input type="number" v-model="form.rfmPrms[11]"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <br>
                             <button

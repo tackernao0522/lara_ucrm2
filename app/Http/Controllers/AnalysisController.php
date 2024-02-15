@@ -89,15 +89,13 @@ class AnalysisController extends Controller
         for ($i = 0; $i < 5; $i++) {
             array_push($eachCount, [
                 'rank' => $rank,
-                'r' => $rCount[$i],
+                // 'r' => $rCount[$i],
                 'f' => $fCount[$i],
                 'm' => $mCount[$i],
             ]);
 
             $rank--;
         }
-
-        dd($total, $eachCount, $rCount, $fCount, $mCount);
 
         // concatで文字列結合
         // 6. RとFで2次元で表示してみる
@@ -112,8 +110,6 @@ class AnalysisController extends Controller
         ')
             ->orderBy('rRank', 'desc')
             ->get();
-
-        dd($data);
 
         return Inertia::render('Analysis');
     }
