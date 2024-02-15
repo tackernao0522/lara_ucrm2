@@ -1,5 +1,5 @@
 <script setup>
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
 
 defineProps({ // idの受け取り
     id: String,
@@ -8,7 +8,7 @@ defineProps({ // idの受け取り
 
 const deleteConfirm = id => {
     // console.log(id)
-    Inertia.delete(`/inertia/${id}`, {
+    router.delete(`/inertia/${id}`, {
         onBefore: () => confirm('本当に削除しますか？')
     })
 }
