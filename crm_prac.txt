@@ -1,1 +1,1 @@
-README17.md  67. 顧客情報をv-forで表示から
+README21.md  67. セクション6: CRM 購買履歴画面から
