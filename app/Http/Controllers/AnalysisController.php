@@ -11,10 +11,6 @@ class AnalysisController extends Controller
 {
     public function index()
     {
-        // 期間指定
-        $startDate = '2021-09-01';
-        $endDate = '2022-8-31';
-
         return Inertia::render('Analysis');
     }
 }

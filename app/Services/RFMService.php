@@ -77,7 +77,7 @@ class RFMService
         for ($i = 0; $i < 5; $i++) {
             array_push($eachCount, [
                 'rank' => $rank,
-                // 'r' => $rCount[$i],
+                'r' => $rCount[$i],
                 'f' => $fCount[$i],
                 'm' => $mCount[$i],
             ]);
