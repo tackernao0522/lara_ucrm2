@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             ItemsTableSeeder::class,
+            RanksTableSeeder::class,
         ]);
 
         Customer::factory(1000)->create();
